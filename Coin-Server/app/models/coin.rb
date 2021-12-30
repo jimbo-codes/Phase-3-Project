@@ -1,7 +1,9 @@
 class Coin < ActiveRecord::Base
-    # need stock table + seed
-    belongs_to :portfolio
+    # has_many :prices
+    has_many :usercoins
+    has_many :users, through: :usercoins
 
+# you gotta say the other belong?
     # Start with a single fetch, figure out the timer later
     # (with error handling for 400 type responses)
 end
