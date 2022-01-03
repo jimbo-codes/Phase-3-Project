@@ -11,30 +11,17 @@
 # It's strongly recommended that you check this file into your version control system.
 
 ActiveRecord::Schema.define(version: 2021_12_30_223217) do
-
+  
   create_table "coins", force: :cascade do |t|
-    t.float "price"
-    t.integer "market_cap"
-    t.integer "supply"
-    t.string "coin_name"
-    t.string "coin_image"
-  end
-
-  create_table "portcoins", force: :cascade do |t|
-    t.integer "coin_id"
-    t.integer "portfolio_id"
-  end
-
-  create_table "portfolios", force: :cascade do |t|
-    t.string "user_id"
-    t.datetime "created_at"
-  end
-
-  create_table "user_coins", force: :cascade do |t|
-    t.integer "coin_id"
-    t.integer "user_id"
-  end
-
+      t.float "current_price"
+      t.string "coin_name"
+      t.string "coin_image"
+      t.string "coin_symbol"
+      t.datetime "update_time"
+      t.integer "market_cap"
+      t.integer "total_supply"
+      t.integer "max_supply"
+end
   create_table "usercoins", force: :cascade do |t|
     t.integer "coin_id"
     t.integer "user_id"
