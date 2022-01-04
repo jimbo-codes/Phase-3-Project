@@ -14,16 +14,24 @@ class UsersController < ApplicationController
         else
         #else redirect to signup page and implement flash error msg
         user = User.create(params)
-        "Success".to_json
-        # status 200
-        # status 200, body: 'User Created!'.to_json
-            # binding.pry
-        
-            ### WHATEVER YOU DO TO PUSH LOGIN THROUGH SHOULD GO HERE.
+        session[:user_id] = user.id # This logs you in
+        user.id.to_json
+
+        ## SET YOUR SESSION THING HERE
         end
     end
 
     #login '/login' (acts like "read")
+    post '/login' do
+        user = User.find_by(username: params[:username])
+        if user && user.authenticate(params[:password])
+            session[:user_id] = user.id
+        end
+        binding.pry
+        # if exist + pw is correct
+            # then login
+        #else say invalid login.
+    end
 
 
     # log out '/logout' (acts like delete, clears session)
