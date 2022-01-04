@@ -4,6 +4,16 @@ require 'json'
 
 class ApplicationController < Sinatra::Base
   # set :default_content_type, 'application/json'
+
+  configure do
+    set :public_folder, 'public'
+    set :views, 'app/views' 
+    enable :sessions
+    set :sessions, true
+		set :session_secret, ENV['SESSION_SECRET']
+    # use Rack::Flash
+  end 
+
   get "/coins" do
     # set :default_content_type, 'application/json'
     content_type :json
@@ -29,7 +39,12 @@ class ApplicationController < Sinatra::Base
 
   post '/usercoins' do
     new_port = Usercoin.create(
-      
+
+      ## Do user authentication first to use session ID for user ID
+      ## Then have your click event reference + lookup the 
+
+      #use params to reference the thing that will let you lookup which coin this is
+
       #have the current user saved in var + set on the login
 
       #take the onclick thing, and seach it in your DB (can use db_ID field)
