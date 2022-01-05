@@ -15,9 +15,7 @@ class UsersController < ApplicationController
         #else redirect to signup page and implement flash error msg
         user = User.create(params)
         session[:user_id] = user.id # This logs you in
-        user.id.to_json
-
-        ## SET YOUR SESSION THING HERE
+        user.id.to_json #sends UID back to frontend (in case you need)
         end
     end
 
@@ -26,14 +24,20 @@ class UsersController < ApplicationController
         user = User.find_by(username: params[:username])
         if user && user.authenticate(params[:password])
             session[:user_id] = user.id
+            user.id.to_json
+            # binding.pry
+        else
+            status 401
+            {error: "Invalid Username or Password."}.to_json
         end
-        binding.pry
-        # if exist + pw is correct
-            # then login
-        #else say invalid login.
     end
 
-
+    post '/sign_out' do
+        #here IF your session ID = user ID then logout
+        session.clear
+        {result: "logged out"}.to_json
+        # binding.pry
+    end
     # log out '/logout' (acts like delete, clears session)
 
 end
