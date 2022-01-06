@@ -10,18 +10,23 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_12_30_223217) do
-  
+ActiveRecord::Schema.define(version: 2022_01_05_231913) do
+
   create_table "coins", force: :cascade do |t|
-      t.float "current_price"
-      t.string "coin_name"
-      t.string "coin_image"
-      t.string "coin_symbol"
-      t.datetime "update_time"
-      t.integer "market_cap"
-      t.integer "total_supply"
-      t.integer "max_supply"
-end
+    t.float "current_price"
+    t.string "coin_name"
+    t.string "coin_image"
+    t.string "coin_symbol"
+    t.datetime "update_time"
+    t.integer "market_cap"
+    t.integer "total_supply"
+    t.integer "max_supply"
+    t.string "coin_id"
+    t.float "price_chg"
+    t.integer "market_rank"
+    t.integer "volume"
+  end
+
   create_table "usercoins", force: :cascade do |t|
     t.integer "coin_id"
     t.integer "user_id"

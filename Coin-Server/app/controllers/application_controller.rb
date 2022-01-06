@@ -31,29 +31,37 @@ class ApplicationController < Sinatra::Base
             total_supply: coin['total_supply'],
             max_supply: coin['max_supply'], 
             coin_name: coin['name'], 
-            coin_image: coin['image'])
+            coin_image: coin['image'],
+            coin_id: coin['id'],
+            price_chg: coin['price_change_percentage_24h'],
+            market_rank: coin['market_cap_rank'],
+            volume: coin['total_volume']
+          )
         end
       end
     response.body
   end
 
   post '/usercoins' do
-    new_port = Usercoin.create(
+    
+    ### CONFIRM THAT IT ISNT IN USERS PORTFOLIO already
 
-      ## Do user authentication first to use session ID for user ID
-      ## Then have your click event reference + lookup the 
+    coin = Coin.find_by coin_id: params[:id]
+    new_port = Usercoin.new(coin_id: coin.id, user_id: params[:user])
+    new_port.save
+    "response".to_json
+  end
 
-      #use params to reference the thing that will let you lookup which coin this is
-
-      #have the current user saved in var + set on the login
-
-      #take the onclick thing, and seach it in your DB (can use db_ID field)
-      # Then return the database ID
-      #coin ID and User ID
-    )
+  get '/usercoins/:user_id' do
+    # binding.pry
+    user = User.find_by username: params[:user_id]
+    #Write an instance method to return the user's portfolio coins
+    user.portfolioCoins.to_json
   end
 
   delete '/usercoins/:id' do
+    #going to need to figure this one out a bit
+    # Take the id and Find_by (like above) to then delete by the coin_id
     del = Usercoin.find(params[:id])
     del.destroy
     del.to_json

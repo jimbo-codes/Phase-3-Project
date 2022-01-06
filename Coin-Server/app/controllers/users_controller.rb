@@ -1,7 +1,7 @@
 require 'pry'
 
 class UsersController < ApplicationController
-
+    enable :sessions
     # YOU WILL NEED TO SET THE USER SESSION = USER ID
 
     #we don't have a get signup because that display handled in react.
