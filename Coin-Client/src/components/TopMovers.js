@@ -5,15 +5,16 @@
 // will dig thru api docs.
 import React from "react";
 
-function TopMovers({trend, round}) {
+function TopMovers({trend, btc, round}) {
   // put this before table, but below the other cards  
   if(trend[0]!=='loading'){
     let coins = trend.coins;
+    console.log(btc)
     // let index = 0;
     // console.log(coins)
     // data = Array.from(props.data)
     // let price = coins.item.price_btc
-    // price = round(price)
+    // price = round(price/btc)
     // console.log(trend)
 
     return (      
@@ -26,7 +27,7 @@ function TopMovers({trend, round}) {
           <div className='inline-block text-center'>
             <div className='inline-block text-center content-center'>
               <dd className="mt-1 text-sm font-semibold content-center text-center text-gray-900"><img className="float-left w-6 pr-1" src={coin.item.small} alt={coin.item.name}/>{coin.item.name}</dd>
-              <dd className="mt-1 ml-6 text-sm font-semibold text-center text-gray-900">${round(coin.item.price_btc)}</dd>
+              <dd className="mt-1 ml-6 text-sm font-semibold text-center text-gray-900">${round(coin.item.price_btc*btc)}</dd>
             </div>
             </div>
         </div> 

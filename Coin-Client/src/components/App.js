@@ -20,15 +20,19 @@ const [global, setGlobal] = useState({name:'loading'});
 const [trend, setTrend] = useState(['loading']);
 const [log, setLog] = useState(true)
 const [user, setUser] = useState("")
+const [btc, setBtc] = useState(1)
 
 useEffect(() => {
   fetch('http://localhost:9292/coins')
   .then(r=>r.json())
-
   // Here you should have a "checker" to see time vs. last update, if the curr time is >
   // Then run a patch to update the Price, volume and supply
-
-  .then(data=> {setTable(data)})
+  .then(data=> {
+    setTable(data);
+    if(data[0].id==='bitcoin')
+    // console.log(data)
+    setBtc(data[0].current_price)
+  })
   .catch(error=> {
     console.log(error)})
 },[])
@@ -36,7 +40,7 @@ useEffect(() => {
 useEffect(() => {
   fetch('https://api.coingecko.com/api/v3/global')
   .then(r=>r.json())
-  .then(data=> {setGlobal(data);console.log(data)})
+  .then(data=> {setGlobal(data)})
   .catch(error=> {
     console.log(error)})
 },[])
@@ -60,7 +64,7 @@ return (
  
     <Routes>  
       {/* Bottom level application with all core functionality */}
-      <Route path="app/*" element={<CryptoPage name={name}user={user}trend={trend} global={global} table={table}/>}/>
+      <Route path="app/*" element={<CryptoPage btc={btc}name={name}user={user}trend={trend} global={global} table={table}/>}/>
 
       <Route path="user/create" element={<CreateUser setUser={setUser}setLog={setLog} log={log} auth={auth}name={name} setName={setName} email={email} setEmail={setEmail} setAuth={setAuth}/>}/>
 

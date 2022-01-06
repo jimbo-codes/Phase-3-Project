@@ -1,4 +1,4 @@
-import React,{useState} from "react";
+import React,{useState, useCallback} from "react";
 import SearchBar from "./SearchBar";
 import ProjectDetail from "./ProjectDetail";
 import CryptoList from './CryptoList';
@@ -6,12 +6,16 @@ import { Route, Routes } from "react-router";
 import TopMovers from "./TopMovers";
 import Portfolio from './Portfolio';
 
-function CryptoPage({name, user, table, global, trend }) {
+function CryptoPage({name, btc, user, table, trend }) {
     const [detail, setDetail] = useState([]);
     const [searchContent, setSearch] = useState('');
-    const [update, setUpdate] = useState(false)
     const [portCoins, setPortCoins] = useState([]);
+    
 
+    function handleCoin(data){
+        // console.log(data)
+        setPortCoins(data)
+    }
 // console.log(table)
     function round(price){
         if(Number(price)>100){
@@ -33,10 +37,10 @@ function CryptoPage({name, user, table, global, trend }) {
             <Routes>
                 <Route path=":id" element={<ProjectDetail detail={detail} setDetail={setDetail}/>} />
             </Routes>
-            <TopMovers round={round} trend={trend}/>
+            <TopMovers btc={btc} round={round} trend={trend}/>
             {/* {portCoins?<Portfolio portCoins={portCoins}/>:null} */}
-            <Portfolio setPortCoins={setPortCoins} portCoins={portCoins} round={round}name={name}table={table}/>
-            <CryptoList setPortCoins={setPortCoins} portCoins={portCoins} user={user}round={round} table={table}/>
+            <Portfolio setPortCoins={handleCoin} portCoins={portCoins} round={round}name={name}table={table}/>
+            <CryptoList setPortCoins={handleCoin} portCoins={portCoins} user={user}round={round} table={table}/>
         </div>
       );
     }
