@@ -49,7 +49,7 @@ class ApplicationController < Sinatra::Base
     coin = Coin.find_by coin_id: params[:id]
     new_port = Usercoin.new(coin_id: coin.id, user_id: params[:user])
     new_port.save
-    "response".to_json
+    new_port.to_json
   end
 
   get '/usercoins/:user_id' do
@@ -60,11 +60,15 @@ class ApplicationController < Sinatra::Base
   end
 
   delete '/usercoins/:id' do
-    #going to need to figure this one out a bit
-    # Take the id and Find_by (like above) to then delete by the coin_id
-    del = Usercoin.find(params[:id])
-    del.destroy
-    del.to_json
+# binding.pry
+# YOU"RE DELETING THE ACTUAL COINS IN DATABASE.
+
+    del = Coin.find_by coin_id: params[:id]
+    delete = Usercoin.find_by coin_id: del.id
+
+    # binding.pry
+    delete.destroy
+    delete.to_json
   end
 # creating the portfolio
 end
