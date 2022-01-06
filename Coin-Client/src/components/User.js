@@ -1,31 +1,41 @@
 import { Link } from 'react-router-dom';
+import { Navigate } from 'react-router-dom'
+import React,{useState} from "react";
 // Try to get google auth working here for fun if possible
-export default function User({setAuth,setName,setEmail,name,email}) {
-   function handleName(e){
+export default function User({setAuth,setUser,setName,setEmail,auth,name,email,setLog,log}) {
+  const [loginError, setLogErr] = useState("");
+  function handleName(e){
        setName(e.target.value)
    }
    function handleEmail(e){
     setEmail(e.target.value)
 }
-    function handleClick(){
-       setAuth(true);
-       const userObj = {
-           name: name,
-           email: email
-       }
-       fetch('http://localhost:3000/users',{
-           method:'POST',
-           headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify(userObj)
-       })
-       .then(r=>r.json())
-       .then(data=>console.log(data))
-       .catch(error=>console.log(error))
-       // handle your post request here.
-
+    function handleClick(e){
+      e.preventDefault()
+       fetch('http://localhost:9292/login',{
+             method:'POST',
+             headers: {
+              'Accept': 'application/json',
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+            username: name,
+            password: email
+        })
+        })
+        .then(r=>r.json())
+        .then((e)=> {
+          // console.log(e)
+          if(Object.keys(e)[0] === "error")
+          setLogErr(e['error'])
+          else {setUser(e);setAuth(true);setLog(true)}
+          // don't console log this, just set your session ID here
+      })
+       .catch(error=>{console.log(error)})
+        return <Navigate to='/app'/> // you can change this so it redirects to user signin instead.
+   }     
+   if(auth === true){
+     return <Navigate to='/app'/>
    }
     return (
       <>
@@ -50,24 +60,27 @@ export default function User({setAuth,setName,setEmail,name,email}) {
             />
             {/* Above figure out what image we want to use */}
 
-            <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">Create an Account</h2>
+            <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">Sign in to your account</h2>
             <p className="mt-2 text-center text-sm text-gray-600">
               Or{' '}
               {/* Use history to make this a goback button to either about or home dpeending on where at. Set state for nav bar accordingly.*/}
-              <Link to='/'className="font-medium text-indigo-600 hover:text-indigo-500">
-                Go Back
+              <Link to='/user/create'className="font-medium text-indigo-600 hover:text-indigo-500">
+                {/* Have the link here SEND TO CREATE USER FORM (new route) */}
+                Create New Account
               </Link>
             </p>
           </div>
   
           <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
             <div className="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10">
+            {loginError? <h3 className='text-center text-red-500' >{loginError}</h3>:null}
+            {/* <Link className="underline text-blue-600"to='/user/create'>Create account instead</Link> */}
               <form className="space-y-6">
                   {/* eliminating the default HTML form submission to make a dumb onClick version for simplicity sake. */}
                   {/* action="http://localhost:3001/app" method="POST" */}
                 <div>
                 <label htmlFor="name" className="block text-sm font-medium text-gray-700">
-                    Name
+                    Username
                   </label>
                   <div className="mt-1">
                     <input
@@ -84,8 +97,8 @@ export default function User({setAuth,setName,setEmail,name,email}) {
                 </div>
   
                 <div>
-                  <label htmlFor="email" className="block text-sm font-medium text-gray-700">
-                    Email
+                  <label htmlFor="password" className="block text-sm font-medium text-gray-700">
+                    Password
                   </label>
                   <div className="mt-1">
                     <input
@@ -93,8 +106,8 @@ export default function User({setAuth,setName,setEmail,name,email}) {
                     onChange={handleEmail}
                       id="email"
                       name="email"
-                      type="email"
-                      autoComplete="email"
+                      type="password"
+                      // autoComplete="email"
                       required
                       className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                     />
@@ -123,14 +136,14 @@ export default function User({setAuth,setName,setEmail,name,email}) {
                 </div>
   
                 <div>
-                  <Link to='/app'
+                  <button to='/app'
                   onClick={handleClick}
                     // type="submit"
                     // Still needs form validation
                     className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
                   >
                     Sign in
-                  </Link>
+                  </button>
                 </div>
               </form>
   

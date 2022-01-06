@@ -1,6 +1,6 @@
 import CryptoData from "./CryptoData";
 
-function CryptoList({table, round}) {
+function CryptoList({table, user, setPortCoins, round, portCoins}) {
 let index=0;
 // can render the table rows w/ array of info.map.
     return (      
@@ -13,6 +13,7 @@ let index=0;
                       <table className="min-w-full divide-y divide-gray-200" id="market-table">
                         <thead className="bg-gray-50">
                             <tr className="bg-indigo-600">
+                            <th scope="col" className="px-1 py-3 text-left text-xs font-medium text-white uppercase tracking-wider" ></th>
                             <th scope="col" className="px-1 py-3 text-left text-xs font-medium text-white uppercase tracking-wider" ></th>
                                 <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-white uppercase tracking-wider">
                                     Name
@@ -30,6 +31,9 @@ let index=0;
                                 {table.map((coin)=>{
                                     index++
                                     return <CryptoData
+                                        user={user}
+                                        setPortCoins={setPortCoins}
+                                        portCoins={portCoins}
                                         key={coin.id}
                                         round={round}
                                         image={coin.image}

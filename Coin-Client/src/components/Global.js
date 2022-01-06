@@ -8,10 +8,10 @@ function Global({global}) {
         let eth = global.data.market_cap_percentage.eth.toFixed(2)
         let time = global.data.updated_at
         time = Date(time * 1000)
-        console.log(time)
+        // console.log(time)
         
       return (
-        <nav className="sticky border-t-2 top-0 z-50 flex justify-center bg-white shadow">
+        <nav className="sticky border-t-5 top-5 py-0 z-40 flex justify-center bg-white shadow">
           <ol className=" space-x-4 text-sm">
                 <div className="inline-block">
                     <strong>Coins:</strong> {coins}

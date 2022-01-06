@@ -7,6 +7,7 @@ import ProductHome from './ProductHome';
 import User from './User';
 import CryptoPage from './CryptoPage';
 import Global from './Global';
+import CreateUser from './CreateUser';
 
 function App() {
 const [auth, setAuth] = useState(false);
@@ -17,21 +18,29 @@ const [about, setAbout] = useState(false);
 const [table, setTable] = useState([]);
 const [global, setGlobal] = useState({name:'loading'});
 const [trend, setTrend] = useState(['loading']);
+const [log, setLog] = useState(true)
+const [user, setUser] = useState("")
 
 useEffect(() => {
-  fetch('https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd')
+  fetch('http://localhost:9292/coins')
   .then(r=>r.json())
-  .then(data=> {setTable(data);console.log(data)})
+
+  // Here you should have a "checker" to see time vs. last update, if the curr time is >
+  // Then run a patch to update the Price, volume and supply
+
+  .then(data=> {setTable(data)})
   .catch(error=> {
     console.log(error)})
 },[])
+
 useEffect(() => {
   fetch('https://api.coingecko.com/api/v3/global')
   .then(r=>r.json())
-  .then(data=> {setGlobal(data)})
+  .then(data=> {setGlobal(data);console.log(data)})
   .catch(error=> {
     console.log(error)})
 },[])
+
 useEffect(() => {
   fetch('https://api.coingecko.com/api/v3/search/trending')
   .then(r=>r.json())
@@ -43,15 +52,20 @@ useEffect(() => {
 return (
  <Router>
    <div className='sticky top-0 z-50'>
-      <NavBar auth={auth} name={name} email={email} setAbout={setAbout} about={about} home={home} setHome={setHome}/>
-      {auth?<Global global={global}/>:null}
+      <NavBar className='' setLog={setLog} log={log} setAuth={setAuth} auth={auth} name={name} email={email} setAbout={setAbout} about={about} home={home} setHome={setHome}/>
+      <div className='z-50'>
+    {auth?<Global global={global}/>:null}
   </div>
+  </div>
+ 
     <Routes>  
       {/* Bottom level application with all core functionality */}
-      <Route path="app/*" element={<CryptoPage trend={trend} global={global} name={name} table={table}/>}/>
+      <Route path="app/*" element={<CryptoPage name={name}user={user}trend={trend} global={global} table={table}/>}/>
+
+      <Route path="user/create" element={<CreateUser setUser={setUser}setLog={setLog} log={log} auth={auth}name={name} setName={setName} email={email} setEmail={setEmail} setAuth={setAuth}/>}/>
 
       {/* This is the user input form */}
-      <Route path="user/*" element={<User name={name} setName={setName} email={email} setEmail={setEmail} setAuth={setAuth}/>}/>
+      <Route path="user/*" element={<User setLog={setLog} setUser={setUser}log={log} name={name} auth={auth} setName={setName} email={email} setEmail={setEmail} setAuth={setAuth}/>}/>
 
       {/* This is the about page */}
       <Route path='about' element={<About/>}/>      

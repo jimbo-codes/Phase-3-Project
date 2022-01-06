@@ -3,25 +3,25 @@
 
 // This will require figuring out some historical data in order to compare DoD changes.
 // will dig thru api docs.
-import React,{useState} from "react";
+import React from "react";
 
 function TopMovers({trend, round}) {
   // put this before table, but below the other cards  
   if(trend[0]!=='loading'){
     let coins = trend.coins;
-    let index = 0;
-    console.log(coins)
+    // let index = 0;
+    // console.log(coins)
     // data = Array.from(props.data)
     // let price = coins.item.price_btc
     // price = round(price)
-    console.log(trend)
+    // console.log(trend)
 
     return (      
     
     <dl className="mt-5 mx-2 grid grid-cols-1 gap-5  sm:grid-cols-7">
       {/* MAP IT HERE */}
       {coins.map((coin, index) => (
-        <div className="px-4 py-5 bg-white border-2 border-indigo-500 text-center rounded-lg overflow-hidden sm:p-4">
+        <div key={coin.item.id} className="px-4 py-5 bg-white border-2 border-indigo-500 text-center rounded-lg overflow-hidden sm:p-4">
           <dt className="text-sm font-medium text-center text-gray-500 truncate">#{index+1} Most Searched</dt>
           <div className='inline-block text-center'>
             <div className='inline-block text-center content-center'>
